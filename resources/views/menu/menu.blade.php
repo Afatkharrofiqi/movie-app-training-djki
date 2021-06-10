@@ -1,9 +1,11 @@
 <li class="nav-item {{ request()->is(['home','/']) ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('home') }}">Home</a>
 </li>
-<li class="nav-item {{ request()->is('*user*') ? 'active' : '' }}">
-    <a class="nav-link" href="{{ route('user.index') }}">User</a>
-</li>
+@can('access_user')
+    <li class="nav-item {{ request()->is('*user*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('user.index') }}">User</a>
+    </li>
+@endcan
 <li class="nav-item {{ request()->is('*category') ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('category.index') }}">Category</a>
 </li>

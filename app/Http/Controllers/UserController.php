@@ -26,6 +26,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        if(auth()->user()->cannot('create_user')) {
+            abort(403);
+        }
         return view('user.create');
     }
 
@@ -82,6 +85,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        if(auth()->user()->cannot('edit_user')) {
+            abort(403);
+        }
         $user = User::findOrFail($id);
         return view('user.edit', ['user'=>$user]);
     }
@@ -124,6 +130,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        if(auth()->user()->cannot('delete_user')) {
+            abort(403);
+        }
         DB::beginTransaction();
         try {
             $user = User::findOrFail($id);
