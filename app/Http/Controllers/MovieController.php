@@ -132,6 +132,18 @@ class MovieController extends Controller
      */
     public function destroy(Movie $movie)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $movie->categories()->detach();
+            if($movie->cover && file_exists(storage_path('app/public/'. $movie->cover))){
+                Storage::delete('public/'.$movie->cover);
+            }
+            $movie->delete();
+            DB::commit();
+            return redirect()->route('movie.index')->with('status', 'movie '.$movie->name.' berhasil dihapus.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('movie.index')->with('status', $e->getMessage());
+        }
     }
 }
